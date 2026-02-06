@@ -4,6 +4,9 @@ const list = document.querySelector(".todo-list")
 
 
 button.addEventListener("click", () => {
+    const taskBox = document.createElement("div")
+    taskBox.className = "todo-box"
+
     const li = document.createElement("li");
     li.className = "todo-list-tasks"
     li.innerText = input.value
@@ -16,7 +19,7 @@ button.addEventListener("click", () => {
     cancelBtn.innerHTML = "Delete"
 
     cancelBtn.addEventListener("click", () => {
-        list.removeChild(li)
+        list.removeChild(taskBox)
     })
 
     const doneBtn = document.createElement("button")
@@ -26,10 +29,12 @@ button.addEventListener("click", () => {
     doneBtn.addEventListener("click", () => {
     })
 
+
     yesNoButtons.appendChild(cancelBtn)
     yesNoButtons.appendChild(doneBtn)
     li.appendChild(yesNoButtons)
-    list.appendChild(li)
+    taskBox.appendChild(li)
+    list.appendChild(taskBox)
     input.value = "";
 })
 
