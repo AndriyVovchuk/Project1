@@ -28,11 +28,16 @@ body {
 }
 
 .bottom-conteiner {
-    width: 670px;
-    height: 70px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 630px;
+    height: 30px;
     background-color: rgb(77, 70, 255);
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    color: white;
 }
 
 .heading {
@@ -76,6 +81,10 @@ body {
     margin-bottom: 7px;
 }
 
+.todo-cancel-btn {
+    margin-right: 3px;
+}
+
 .todo-list-tasks {
     display: flex;
     justify-content: space-between;
@@ -84,4 +93,26 @@ body {
     border-radius: 18px;
     padding: 24px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04)
+}
+
+.total-counter {
+    margin: 0;
+    width: 150px;
+    color: white;
+}
+
+.task-counter-number {}
+
+.active-and-done-counter {
+    display: flex;
+    justify-content: space-between;
+    width: 130px;
+}
+
+.active-counter {
+    margin: 0px;
+}
+
+.done-counter {
+    margin: 0px;
 }
