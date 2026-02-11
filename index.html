@@ -22,12 +22,32 @@
             <div class="input-btn-conteiner">
                 <input class="add-input" type="text"> <button class="add-btn">Add</button>
             </div>
+
+            <div class="sort-and-filter-buttons-conteiner">
+                <div class="sort-buttons-conteiner">
+                    <button class="sort-button">All</button>
+                    <button class="sort-button">In progress</button>
+                    <button class="sort-button">Compleated</button>
+                    <button class="sort-button">Canceled</button>
+                </div>
+
+                <select class="filter-button" name="" id="">
+                    <option value="">
+                        Newest First</option>
+                    <option value="">
+                        Recently Finished</option>
+                    <option value="">
+                        Alphebetical
+                    </option>
+                </select>
+            </div>
+
             <ul class="todo-list"></ul>
         </div>
 
         <div class="bottom-conteiner">
             <h3 class="total-counter">Total:<span class="task-counter-number">0</span></h3>
-        
+
             <div class="active-and-done-counter">
                 <h4 class="active-counter">Active</h4>
                 <h4 class="done-counter">Done</h4>
