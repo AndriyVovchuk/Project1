@@ -2,8 +2,12 @@ const button = document.querySelector(".add-btn")
 const input = document.querySelector(".add-input")
 const list = document.querySelector(".todo-list")
 const counter = document.querySelector(".task-counter-number")
+const activeCounter = document.querySelector(".active-counter-number")
+const doneCounter = document.querySelector(".done-counter-number")
 
 let taskCount = 0;
+let activeCount = 0;
+let doneCount = 0;
 
 button.addEventListener("click", () => {
 
@@ -11,8 +15,14 @@ button.addEventListener("click", () => {
         return alert("Додайте завдання!")
     };
 
-    function updateCounter () { 
+    function updateCounterTaskCounter() {
         counter.innerHTML = taskCount
+    }
+    function updateActiveCounter() {
+        activeCounter.innerHTML = activeCount
+    }
+    function updateDoneCounter() {
+        doneCounter.innerHTML = doneCount
     }
 
     const taskBox = document.createElement("div")
@@ -32,7 +42,9 @@ button.addEventListener("click", () => {
     cancelBtn.addEventListener("click", () => {
         list.removeChild(taskBox);
         taskCount--;
-        updateCounter();
+        updateCounterTaskCounter();
+        activeCount--;
+        updateActiveCounter();
     })
 
     const doneBtn = document.createElement("button")
@@ -40,7 +52,16 @@ button.addEventListener("click", () => {
     doneBtn.innerHTML = "Done"
 
     doneBtn.addEventListener("click", () => {
+        doneCount++
+        updateDoneCounter()
 
+        activeCount--
+        updateActiveCounter();
+
+        yesNoButtons.removeChild(cancelBtn)
+        yesNoButtons.removeChild(doneBtn)
+
+        li.classList.toggle('active')
     })
 
     yesNoButtons.appendChild(cancelBtn)
@@ -50,7 +71,11 @@ button.addEventListener("click", () => {
     list.appendChild(taskBox)
 
     taskCount++;
-    updateCounter();
+    updateCounterTaskCounter();
+    activeCount++;
+    updateActiveCounter();
+
+    updateDoneCounter()
 
     input.value = "";
 })
