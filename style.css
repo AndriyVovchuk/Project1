@@ -130,6 +130,11 @@ body {
     margin-right: 1.5px;
 }
 
+.todo-cancel-btn.active {
+    text-decoration: line-through;
+    text-decoration-color: white;
+}
+
 .todo-done-btn {
     margin-left: 1.5px;
 }
@@ -148,7 +153,6 @@ body {
 .todo-list-tasks.active {
     text-decoration: line-through;
     text-decoration-color: white;
-
 }
 
 .total-counter {

@@ -5,9 +5,83 @@ const counter = document.querySelector(".task-counter-number")
 const activeCounter = document.querySelector(".active-counter-number")
 const doneCounter = document.querySelector(".done-counter-number")
 
-let taskCount = 0;
-let activeCount = 0;
-let doneCount = 0;
+const allBtn = document.getElementById("all-btn")
+const inProgresBtn = document.getElementById("in-progres-btn")
+const completedBtn = document.getElementById("compleated-btn")
+const cenceledBtn = document.getElementById("canceled-btn")
+
+
+let tasks = []
+let currentFilter = "all";
+
+function renderTasks() {
+
+    list.innerHTML = ""
+
+    let filteredTask = tasks
+
+    if (currentFilter !== "all") {
+        filteredTask = tasks.filter(task => task.status == currentFilter)
+    }
+
+    filteredTask.forEach(task => {
+        const taskBox = document.createElement("div")
+        taskBox.className = "todo-box"
+
+        const li = document.createElement("li")
+        li.className = "todo-list-tasks"
+        li.innerText = task.text
+
+        if (task.status === "done") {
+            li.classList.add("active")
+        }
+
+        if (task.status === "cenceled") {
+            li.classList.add("active")
+        }
+
+        const yesNoButtons = document.createElement("div")
+        yesNoButtons.className = "todo-yes-no-buttones"
+
+        const cancelBtn = document.createElement("button")
+        cancelBtn.className = "todo-cancel-btn"
+        cancelBtn.innerHTML = "Cencel"
+
+        cancelBtn.addEventListener("click", () => {
+            task.status = "cenceled"
+            cenceledBtn.classList.toggle('active')
+            renderTasks()
+        })
+
+        const doneBtn = document.createElement("button")
+        doneBtn.className = "todo-done-btn"
+        doneBtn.innerHTML = "Done"
+
+        doneBtn.addEventListener("click", () => {
+            task.status = "done"
+            renderTasks()
+        })
+
+        if (task.status === "active") {
+            yesNoButtons.appendChild(cancelBtn)
+            yesNoButtons.appendChild(doneBtn)
+        }
+
+        li.appendChild(yesNoButtons)
+        taskBox.appendChild(li)
+        list.appendChild(taskBox)
+    })
+
+    updateCounters()
+
+}
+
+function updateCounters() {
+    counter.innerHTML = tasks.length
+    activeCounter.innerHTML = tasks.filter(t => t.status === "active").length
+    doneCounter.innerHTML = tasks.filter(t => t.status === "done").length
+}
+
 
 button.addEventListener("click", () => {
 
@@ -15,73 +89,99 @@ button.addEventListener("click", () => {
         return alert("Додайте завдання!")
     };
 
-    function updateCounterTaskCounter() {
-        counter.innerHTML = taskCount
-    }
-    function updateActiveCounter() {
-        activeCounter.innerHTML = activeCount
-    }
-    function updateDoneCounter() {
-        doneCounter.innerHTML = doneCount
-    }
+    const newTask = {
+        id: Date.now(),
+        text: input.value,
+        status: "active"
+    };
 
-    const taskBox = document.createElement("div")
-    taskBox.className = "todo-box"
+    tasks.push(newTask);
+    input.value = ""
 
-    const li = document.createElement("li");
-    li.className = "todo-list-tasks"
-    li.innerText = input.value
+    renderTasks()
 
-    const yesNoButtons = document.createElement("div");
-    yesNoButtons.className = "todo-yes-no-buttones";
-
-    const cancelBtn = document.createElement("button")
-    cancelBtn.className = "todo-cancel-btn"
-    cancelBtn.innerHTML = "Delete"
-
-    cancelBtn.addEventListener("click", () => {
-        list.removeChild(taskBox);
-        taskCount--;
-        updateCounterTaskCounter();
-        activeCount--;
-        updateActiveCounter();
-    })
-
-    const doneBtn = document.createElement("button")
-    doneBtn.className = "todo-done-btn"
-    doneBtn.innerHTML = "Done"
-
-    doneBtn.addEventListener("click", () => {
-        doneCount++
-        updateDoneCounter()
-
-        activeCount--
-        updateActiveCounter();
-
-        yesNoButtons.removeChild(cancelBtn)
-        yesNoButtons.removeChild(doneBtn)
-
-        li.classList.toggle('active')
-    })
-
-    yesNoButtons.appendChild(cancelBtn)
-    yesNoButtons.appendChild(doneBtn)
-    li.appendChild(yesNoButtons)
-    taskBox.appendChild(li)
-    list.appendChild(taskBox)
-
-    taskCount++;
-    updateCounterTaskCounter();
-    activeCount++;
-    updateActiveCounter();
-
-    updateDoneCounter()
-
-    input.value = "";
 })
 
 
+allBtn.addEventListener("click", () => {
+    currentFilter = "all"
+    renderTasks()
+})
+
+inProgresBtn.addEventListener("click", () => {
+    currentFilter = "active"
+    renderTasks()
+})
+
+completedBtn.addEventListener("click", () => {
+    currentFilter = "done"
+    renderTasks()
+})
+
+cenceledBtn.addEventListener("click", () => {
+    currentFilter = "cenceled"
+    renderTasks()
+})
 
 
+//-----------
 
+/*function updateCounterTaskCounter() {
+    counter.innerHTML = taskCount
+}
+function updateActiveCounter() {
+    activeCounter.innerHTML = activeCount
+}
+function updateDoneCounter() {
+    doneCounter.innerHTML = doneCount
+}
 
+const taskBox = document.createElement("div")
+taskBox.className = "todo-box"
+
+const li = document.createElement("li");
+li.className = "todo-list-tasks"
+li.innerText = input.value
+
+const yesNoButtons = document.createElement("div");
+yesNoButtons.className = "todo-yes-no-buttones";
+
+const cancelBtn = document.createElement("button")
+cancelBtn.className = "todo-cancel-btn"
+cancelBtn.innerHTML = "Delete"
+
+const doneBtn = document.createElement("button")
+doneBtn.className = "todo-done-btn"
+doneBtn.innerHTML = "Done"
+
+cancelBtn.addEventListener("click", () => {
+    list.removeChild(taskBox);
+    taskCount--;
+    updateCounterTaskCounter();
+    activeCount--;
+    updateActiveCounter();
+
+})
+
+doneBtn.addEventListener("click", () => {
+    doneCount++
+    updateDoneCounter()
+    activeCount--
+    updateActiveCounter();
+    yesNoButtons.removeChild(cancelBtn)
+    yesNoButtons.removeChild(doneBtn)
+    li.classList.toggle('active')
+})
+
+yesNoButtons.appendChild(cancelBtn)
+yesNoButtons.appendChild(doneBtn)
+li.appendChild(yesNoButtons)
+taskBox.appendChild(li)
+list.appendChild(taskBox)
+
+taskCount++;
+updateCounterTaskCounter();
+activeCount++;
+updateActiveCounter();
+
+updateDoneCounter()*/
