@@ -10,34 +10,49 @@ const inProgresBtn = document.getElementById("in-progres-btn")
 const completedBtn = document.getElementById("compleated-btn")
 const cenceledBtn = document.getElementById("canceled-btn")
 
+const sortSelect = document.querySelector(".filter-button")
 
 let tasks = []
 let currentFilter = "all";
+let currentSort = "newest"
+let filteredTask = tasks
+let currentTime = new Date()
 
 function renderTasks() {
 
     list.innerHTML = ""
 
-    let filteredTask = tasks
+    let filteredTask = [...tasks]
 
     if (currentFilter !== "all") {
         filteredTask = tasks.filter(task => task.status == currentFilter)
+    }
+
+    if (currentSort === "newest") {
+        filteredTask.sort((a, b) => b.id - a.id)
+    }
+
+    if (currentSort === "alphabetical") {
+        filteredTask.sort((a, b) => b.text.localeCompare(a.text))
+    }
+
+    if (currentSort === "recently-finished") {
+        filteredTask.sort((a, b) => (b.completeAt || 0) - (a.completeAt || 0))
     }
 
     filteredTask.forEach(task => {
         const taskBox = document.createElement("div")
         taskBox.className = "todo-box"
 
-        const li = document.createElement("li")
-        li.className = "todo-list-tasks"
-        li.innerText = task.text
+        const textAndTimeConteiner = document.createElement("div")
+        textAndTimeConteiner.className = "todo-list-tasks"
 
-        if (task.status === "done") {
-            li.classList.add("active")
-        }
+        const taskText = document.createElement("span")
+        taskText.className = "task-name"
+        taskText.innerText = task.text
 
-        if (task.status === "cenceled") {
-            li.classList.add("active")
+        if (task.status === "done" || task.status === "cenceled") {
+            taskText.classList.add("active")
         }
 
         const yesNoButtons = document.createElement("div")
@@ -49,7 +64,6 @@ function renderTasks() {
 
         cancelBtn.addEventListener("click", () => {
             task.status = "cenceled"
-            cenceledBtn.classList.toggle('active')
             renderTasks()
         })
 
@@ -59,6 +73,7 @@ function renderTasks() {
 
         doneBtn.addEventListener("click", () => {
             task.status = "done"
+            task.completeAt = Date.now()
             renderTasks()
         })
 
@@ -67,9 +82,33 @@ function renderTasks() {
             yesNoButtons.appendChild(doneBtn)
         }
 
-        li.appendChild(yesNoButtons)
-        taskBox.appendChild(li)
+        textAndTimeConteiner.appendChild(taskText)
+
+        taskBox.appendChild(textAndTimeConteiner)
+        taskBox.appendChild(yesNoButtons)
+
+        const timeAndStatusCouneiner = document.createElement("div")
+        timeAndStatusCouneiner.className = "time-and-status-couneiner"
+
+        const addTaskTime = document.createElement("span")
+        addTaskTime.className = "add-task-time"
+
+        const createdDate = new Date(task.createdAt)
+
+        const formattedDate = createdDate.toLocaleDateString()
+        const formattedTime = createdDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        })
+
+        addTaskTime.innerText = ` Created: ${formattedDate} ${formattedTime}`
+
+        timeAndStatusCouneiner.appendChild(addTaskTime)
+
+        textAndTimeConteiner.appendChild(timeAndStatusCouneiner)
+
         list.appendChild(taskBox)
+
     })
 
     updateCounters()
@@ -82,7 +121,6 @@ function updateCounters() {
     doneCounter.innerHTML = tasks.filter(t => t.status === "done").length
 }
 
-
 button.addEventListener("click", () => {
 
     if (input.value === "") {
@@ -92,16 +130,20 @@ button.addEventListener("click", () => {
     const newTask = {
         id: Date.now(),
         text: input.value,
-        status: "active"
+        status: "active",
+        createdAt: Date.now()
     };
 
     tasks.push(newTask);
     input.value = ""
 
     renderTasks()
-
 })
 
+sortSelect.addEventListener("change", (e) => {
+    currentSort = e.target.value
+    renderTasks()
+})
 
 allBtn.addEventListener("click", () => {
     currentFilter = "all"
@@ -122,6 +164,8 @@ cenceledBtn.addEventListener("click", () => {
     currentFilter = "cenceled"
     renderTasks()
 })
+
+
 
 
 //-----------
