@@ -59,6 +59,10 @@ body {
     border-radius: 5px;
 }
 
+.filter-button:focus {
+    outline: none;
+}
+
 .filter-button:hover {
     background: rgb(99, 99, 99);
     transition: 0.3s;
@@ -66,12 +70,13 @@ body {
 
 
 .head-conteiner {
+    padding: 20px 24px 20px 24px;
     display: flex;
-    align-items: center;
-    justify-content: start;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: rgb(77, 70, 255);
-    width: 670px;
-    height: 100px;
+    width: 622px;
+    height: 54px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 }
@@ -89,8 +94,21 @@ body {
     color: white;
 }
 
+.todo-list-main-svg {
+    width: 30px;
+    height: 30px;
+}
+
 .heading {
-    margin: 20px;
+    display: flex;
+    align-items: center;
+    margin: 0px 0px 5px 0px;
+    color: white;
+    gap: 12px;
+}
+
+.text-under-heading {
+    margin: 0;
     color: white;
 }
 
@@ -116,9 +134,13 @@ body {
 }
 
 .add-input {
+    appearance: none;
+    border-radius: 7px;
+    border: 2pх solid rgb(99, 99, 99);
+    outline: none;
     padding: 5px;
     width: 470px;
-    height: 20px;
+    height: 25px;
 }
 
 .todo-list {
@@ -177,7 +199,9 @@ body {
 }
 
 .time-and-status-couneiner {
-    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6px;
 }
 
 .todo-list-tasks {
@@ -205,6 +229,7 @@ body {
 
 .active-counter {
     margin: 0px;
+    margin-right: 5px;
 }
 
 .done-counter {
@@ -219,4 +244,14 @@ body {
 
 .add-task-time {
     font-size: 12.5px;
+    padding-right: 2.5px;
+}
+
+.done-and-canceleld-task-time {
+    font-size: 12.5px;
+    padding-left: 2.5px;
+}
+
+input::placeholder {
+    color: rgb(99, 99, 99);;
 }

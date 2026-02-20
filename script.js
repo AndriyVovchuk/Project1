@@ -62,9 +62,23 @@ function renderTasks() {
         cancelBtn.className = "todo-cancel-btn"
         cancelBtn.innerHTML = "Cencel"
 
+        function cancelDoneTime() {
+
+        }
+
+        const endedDate = new Date(task.createdAt)
+
+        const formattedDateEnd = endedDate.toLocaleDateString()
+        const formattedTimeEnd = endedDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        })
+
         cancelBtn.addEventListener("click", () => {
             task.status = "cenceled"
-            renderTasks()
+            task.completeAt = Date.now()
+            timeAndStatusCouneiner.innerHTML = ` Ended: ${formattedDateEnd} ${formattedTimeEnd}`
+            renderTasks();
         })
 
         const doneBtn = document.createElement("button")
@@ -74,6 +88,7 @@ function renderTasks() {
         doneBtn.addEventListener("click", () => {
             task.status = "done"
             task.completeAt = Date.now()
+
             renderTasks()
         })
 
@@ -93,6 +108,9 @@ function renderTasks() {
         const addTaskTime = document.createElement("span")
         addTaskTime.className = "add-task-time"
 
+        const doneAndCanceleldTaskTime = document.createElement("span")
+        doneAndCanceleldTaskTime.className = "done-and-canceleld-task-time"
+
         const createdDate = new Date(task.createdAt)
 
         const formattedDate = createdDate.toLocaleDateString()
@@ -102,10 +120,36 @@ function renderTasks() {
         })
 
         addTaskTime.innerText = ` Created: ${formattedDate} ${formattedTime}`
-
         timeAndStatusCouneiner.appendChild(addTaskTime)
 
+        if (task.status === "done" || task.status === "cenceled") {
+            const compleatedDate = new Date(task.completeAt);
+
+            const formattedDate = createdDate.toLocaleDateString()
+            const formattedTime = createdDate.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+            doneAndCanceleldTaskTime.innerText = ` Ended: ${formattedDate} ${formattedTime}`
+        }
+
+        if (task.status === "cenceled") {
+            const compleatedDate = new Date(task.completeAt);
+
+            const formattedDate = createdDate.toLocaleDateString()
+            const formattedTime = createdDate.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+            doneAndCanceleldTaskTime.innerText = ` Cenceled: ${formattedDate} ${formattedTime}`
+        }
+
+        timeAndStatusCouneiner.appendChild(doneAndCanceleldTaskTime)
+
         textAndTimeConteiner.appendChild(timeAndStatusCouneiner)
+
 
         list.appendChild(taskBox)
 
@@ -121,7 +165,8 @@ function updateCounters() {
     doneCounter.innerHTML = tasks.filter(t => t.status === "done").length
 }
 
-button.addEventListener("click", () => {
+function addTask() {
+    if (!input.value.trim()) return
 
     if (input.value === "") {
         return alert("Додайте завдання!")
@@ -129,15 +174,23 @@ button.addEventListener("click", () => {
 
     const newTask = {
         id: Date.now(),
-        text: input.value,
+        text: input.value.trim(),
         status: "active",
         createdAt: Date.now()
     };
 
     tasks.push(newTask);
-    input.value = ""
-
     renderTasks()
+    input.value = ""
+    input.blur();
+}
+
+button.addEventListener("click", addTask)
+
+input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        addTask()
+    }
 })
 
 sortSelect.addEventListener("change", (e) => {
