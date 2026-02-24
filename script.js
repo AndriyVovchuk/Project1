@@ -76,8 +76,8 @@ function renderTasks() {
 
         cancelBtn.addEventListener("click", () => {
             task.status = "cenceled"
-            task.completeAt = Date.now()
-            timeAndStatusCouneiner.innerHTML = ` Ended: ${formattedDateEnd} ${formattedTimeEnd}`
+            task.canceledAt = Date.now()
+            //task.completeAt = Date.now()
             renderTasks();
         })
 
@@ -87,8 +87,7 @@ function renderTasks() {
 
         doneBtn.addEventListener("click", () => {
             task.status = "done"
-            task.completeAt = Date.now()
-
+            task.canceledAt = Date.now()
             renderTasks()
         })
 
@@ -112,38 +111,45 @@ function renderTasks() {
         doneAndCanceleldTaskTime.className = "done-and-canceleld-task-time"
 
         const createdDate = new Date(task.createdAt)
+        const canceledAt = new Date(task.canceledAtAt)
 
-        const formattedDate = createdDate.toLocaleDateString()
-        const formattedTime = createdDate.toLocaleTimeString([], {
+        const formatted = createdDate.toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
             hour: "2-digit",
-            minute: "2-digit"
-        })
+            minute: "2-digit",
+            hour12: false
+        });
 
-        addTaskTime.innerText = ` Created: ${formattedDate} ${formattedTime}`
+        addTaskTime.innerText = ` Created: ${formatted}`
         timeAndStatusCouneiner.appendChild(addTaskTime)
 
         if (task.status === "done" || task.status === "cenceled") {
-            const compleatedDate = new Date(task.completeAt);
+            const compleatedDate = new Date(task.canceledAt);
 
-            const formattedDate = createdDate.toLocaleDateString()
-            const formattedTime = createdDate.toLocaleTimeString([], {
+            const formatted = compleatedDate.toLocaleString("en-US", {
+                month: "short",
+                day: "2-digit",
                 hour: "2-digit",
-                minute: "2-digit"
+                minute: "2-digit",
+                hour12: false
             });
 
-            doneAndCanceleldTaskTime.innerText = ` Ended: ${formattedDate} ${formattedTime}`
+            doneAndCanceleldTaskTime.innerText = ` Ended: ${formatted} `
         }
 
         if (task.status === "cenceled") {
-            const compleatedDate = new Date(task.completeAt);
+            const compleatedDate = new Date(task.canceledAt);
 
-            const formattedDate = createdDate.toLocaleDateString()
-            const formattedTime = createdDate.toLocaleTimeString([], {
+            const formatted = createdDate.toLocaleString("en-US", {
+                month: "short",
+                day: "2-digit",
                 hour: "2-digit",
-                minute: "2-digit"
+                minute: "2-digit",
+                hour12: false
             });
 
-            doneAndCanceleldTaskTime.innerText = ` Cenceled: ${formattedDate} ${formattedTime}`
+            doneAndCanceleldTaskTime.innerText = ` Cenceled: ${formatted} `
         }
 
         timeAndStatusCouneiner.appendChild(doneAndCanceleldTaskTime)
@@ -176,7 +182,8 @@ function addTask() {
         id: Date.now(),
         text: input.value.trim(),
         status: "active",
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        completeAt: Date.now()
     };
 
     tasks.push(newTask);
@@ -217,6 +224,7 @@ cenceledBtn.addEventListener("click", () => {
     currentFilter = "cenceled"
     renderTasks()
 })
+
 
 
 
